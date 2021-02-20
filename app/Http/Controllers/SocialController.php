@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Profile;
 use App\Models\User;
 use Laravel\Socialite\Facades\Socialite;
 use Exception;
@@ -32,8 +33,13 @@ class SocialController extends Controller
                     'password' => encrypt('admin@123')
                 ]);
 
+                $profile = Profile::create([
+                    'text' => "Welcome to your Tap!",
+                    'user_id' => $createUser->id
+                ]);
+
                 Auth::login($createUser);
-                return redirect('/dashboard');
+                return redirect(route('profile.index'));
             }
         } catch (Exception $exception) {
             dd($exception->getMessage());
